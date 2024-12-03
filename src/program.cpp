@@ -1,4 +1,5 @@
 #include <tools/linear.hpp>
+#include <tools/sparse.hpp>
 #include <program.hpp>
 
 int main(int argc, char **argv)
@@ -62,8 +63,21 @@ int main(int argc, char **argv)
   // 1. Transform matrix to CSR format
   // 2. CSR matrix multiplication 
   // ------------------------------------------------------------
+  double **m = make_dmatrix(0,nrow-1, 0, ncol-1);
 
+  //Map<MatrixXd>( &m[0][0], mat2.rows(), mat2.cols() ) = mat2;
+  for (int i=0;i< nrow; i++) {
+      for (int j=0; j< ncol; j++) {
+          m[i][j]=mat2(i,j);
+      }
+  }
 
+  int row, col;
+  int N;
+  double thresh;
+  thresh=0.5;
+  CSR_Dim(m, nrow, ncol, &N, thresh);
+  std::cout << "Non-zero element: " << N  << std::endl;
   return 0;
 }
 
